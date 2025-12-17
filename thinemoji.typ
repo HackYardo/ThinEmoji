@@ -1,4 +1,19 @@
-#set par(spacing:12pt)
+#set document(
+  title:[Thin Emoji],
+  author:"HackYardo@github.com",
+  description:[the most concise Emoji table],
+  keywords:("unicode", "emoji", "cheat-sheet"),
+  date:auto)
+#set page(
+	header:grid(columns:(1fr,)*2, align:(horizon+left, horizon+right),
+		link("https://github.com/HackYardo/ThinEmoji")[ThinEmoji v0.2.5 (Dec 18, 25)],
+		[Don't search emojis one by one!\ Don't write non-ASCII in code!]),
+	numbering:"I / I")
+#set par(justify:true, spacing:12pt)
+#show link: x => {text(blue, underline(x))}
+#show raw.where(block:false): box.with(
+    inset:(x:3pt,y:0pt), outset:(y:3pt), radius:2pt,
+    fill:luma(240),)
 
 #let dec2hex(num) = {
 	let digits = "0123456789abcdef"
@@ -12,6 +27,18 @@
 			hex = digits.at(num) + hex
 			break}}
 	return hex}
+
+//all unicode: (0, 1114112)  // 0000~10FFFF
+//invalid unicode: (55296, 57344)  // D800~DFFF
+//private use area: (57344, 63744)  // E000~F8FF
+
+#place(top+center, float:true, scope:"parent")[
+= Thin Emoji
+_The most concise and comprehensive Emoji 17.0 (Sep 9, 25) table, with hex Unicode codepoints._]
+
+/ Unicode: the de facto standard to encode all characters in the world and history, e.g.\
+  `\u{e6}\u{3c0}\u{42f}\u{1b1c0}\u{1f34e}\u{1f90c}\u{1facd}` $=>$ \u{e6}\u{3c0}\u{42f}\u{1b1c0}\u{1f34e}\u{1f90c}\u{1facd}
+/ Emoji: a subset of unicode that uses pictures to describe things or express emotions
 
 #let row_idx(start, end) = {
 	let rowIdx = ()
@@ -75,12 +102,8 @@
 		grid.header(..header),
 		..item.flatten())}
 
-//all unicode: (0, 1114112)  // 0000~10FFFF
-//invalid unicode: (55296, 57344)  // d800~dfff
-//unicode flags' letters: (127462, 127488)  // 1f1e6~1f1ff
-
 #let emoji_flag_sequence() = {
-	let resize(char) = {text(size:16pt, char)}
+	let resize(char) = {text(size:12pt, char)}
 	let r = range(127462, 127488).map(dec2hex)
 	let v = ()
 
@@ -267,7 +290,8 @@
 
 		emoji_keycap_sequence() // #,*,0~9
 
-		emoji_modifier_sequence()}
+		//emoji_modifier_sequence()
+	}
 	else {
 		for (key, value) in sys.inputs {
 			unicode_printer(eval(key), eval(value))}}}
